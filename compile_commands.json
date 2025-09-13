@@ -1,0 +1,14 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-o",
+      "main",
+      "main.c"
+    ],
+    "directory": "/home/radek/C/MatrixMultiplication",
+    "file": "/home/radek/C/MatrixMultiplication/main.c",
+    "output": "/home/radek/C/MatrixMultiplication/main"
+  }
+]
