@@ -13,14 +13,14 @@ matrix_t *create_random_matrix(int rows, int cols)
         return NULL;
     }
 
-    double *matrix = (double *)malloc(rows * cols * sizeof(double));
+    float *matrix = (float *)malloc(rows * cols * sizeof(float));
     if (matrix == NULL) {
         fprintf(stderr, "Error memory allocation\n");
         return NULL;
     }
 
     for (int i = 0; i < rows * cols; i++) {
-        matrix[i] = (double)rand() / RAND_MAX;
+        matrix[i] = (float)rand() / RAND_MAX;
     }
 
     res->matrix = matrix;

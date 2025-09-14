@@ -10,6 +10,7 @@
 
 #include "my_matrix.h"
 #include "gpu_multiply.h" 
+#include "cuda_multiply.h" 
 
 int dimensions_check_for_mul(matrix_t *A, matrix_t *B, matrix_t *Result){
     if (A->n_cols != B->n_rows) {
@@ -71,7 +72,7 @@ int multiply_ikj(matrix_t *A, matrix_t *B, matrix_t *Result)
 
     for (int i  = 0; i < A->n_rows; ++i) {
         for (int l = 0; l < B->n_rows; ++l) {
-            double r = A->matrix[i * A->n_cols + l];
+            float r = A->matrix[i * A->n_cols + l];
             for (int j = 0; j < B->n_cols; ++j) {
                 Result->matrix[i * B->n_cols + j] += r * B->matrix[l * B->n_cols + j];
             }
@@ -96,7 +97,7 @@ int multiply_blocked(matrix_t *A, matrix_t *B, matrix_t *Result)
                 //Small blocks
                 for (int i = i0; i < i0 + BLOCK_SIZE && i < A->n_rows; ++i) {
                     for (int l = l0; l < l0 + BLOCK_SIZE && l < A->n_cols; ++l) {
-                        double r = A->matrix[i * A->n_cols + l];
+                        float r = A->matrix[i * A->n_cols + l];
                         for (int j = j0; j < j0 + BLOCK_SIZE && j < B->n_cols; ++j) {
                             Result->matrix[i*B->n_cols + j] += r * B->matrix[l * B->n_cols + j];
                         }
@@ -119,7 +120,7 @@ int multiply_parallel(matrix_t *A, matrix_t *B, matrix_t *Result)
     #pragma omp parallel for
     for (int i  = 0; i < A->n_rows; ++i) {
         for (int l = 0; l < B->n_rows; ++l) {
-            double r = A->matrix[i * A->n_cols + l];
+            float r = A->matrix[i * A->n_cols + l];
             for (int j = 0; j < B->n_cols; ++j) {
                 Result->matrix[i * B->n_cols + j] += r * B->matrix[l * B->n_cols + j];
             }
@@ -135,7 +136,7 @@ int multiply_blas(matrix_t *A, matrix_t *B, matrix_t *Result)
         return - 1;
     }
 
-    cblas_dgemm(
+    cblas_sgemm(
         CblasRowMajor,
         CblasNoTrans,
         CblasNoTrans,
@@ -152,7 +153,7 @@ int multiply_blas(matrix_t *A, matrix_t *B, matrix_t *Result)
 
 void calc_and_print_time(char *funcName, struct timespec *start, struct timespec *end)
 {
-    double elapsed_time = (end->tv_sec - start->tv_sec) * 1e3 + (end->tv_nsec - start->tv_nsec) * 1e-6;
+    float elapsed_time = (end->tv_sec - start->tv_sec) * 1e3 + (end->tv_nsec - start->tv_nsec) * 1e-6;
     printf("Function: %s\nTime measured: %f miliseconds\n", funcName, elapsed_time);
 }
 
@@ -196,18 +197,18 @@ int benchmark_multiply(multiply_func_t func_to_run, char *func_name, int n, int 
 
 int main()
 {
-    int factor = 1;
-    int n = 1000 * factor;
-    int k = 2000 * factor;
-    int m = 1500 * factor;
+    int factor = 3;
+    int n = 4096 * factor;
+    int k = 4096 * factor;
+    int m = 4096 * factor;
 
     // benchmark_multiply(multiply_naive, "multiply_naive()", n, k, m);
-    benchmark_multiply(multiply_ikj, "multiply_ikj()", n, k, m);
-    benchmark_multiply(multiply_blocked, "multiply_blocked()", n, k, m);
-    benchmark_multiply(multiply_parallel, "multiply_parallel()", n, k, m);
+    // benchmark_multiply(multiply_ikj, "multiply_ikj()", n, k, m);
+    // benchmark_multiply(multiply_blocked, "multiply_blocked()", n, k, m);
+    // benchmark_multiply(multiply_parallel, "multiply_parallel()", n, k, m);
     benchmark_multiply(multiply_blas, "multiply_blas()", n, k, m);
-    benchmark_multiply(multiply_opencl, "multiply_opencl() (GPU OpenCL)", n, k, m);
-
+    // benchmark_multiply(multiply_opencl, "multiply_opencl() (GPU OpenCL)", n, k, m);
+    benchmark_multiply(multiply_cuda, "multiply_cuda() (GPU CUDA/cuBLAS)", n, k, m);
     
     return 0;
 }

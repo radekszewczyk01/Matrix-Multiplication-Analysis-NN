@@ -2,7 +2,7 @@
 #define MY_MATRIX_H
 
 typedef struct {
-    double *matrix;
+    float *matrix;
     int n_rows;
     int n_cols;
 } matrix_t;

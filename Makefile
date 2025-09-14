@@ -1,42 +1,46 @@
-# Nazwa kompilatora C
+# Kompilatory
 CC = gcc
+NVCC = nvcc
 
-# Flagi kompilatora:
-# Dodajemy -fopenmp tutaj, aby kompilator rozumiał pragmy OpenMP
+# Flagi dla kompilatora C
 CFLAGS = -Wall -Wextra -g -O2 -std=c99 -fopenmp
 
-# Flagi linkera:
-# -lopenblas, -lOpenCL, -lrt to biblioteki do dołączenia na końcu
-LDFLAGS = -lopenblas -lOpenCL -lrt -fopenmp
+# Flagi dla kompilatora CUDA
+NVFLAGS = -O2 -arch=native
+
+# Flagi dla linkera. Używamy nvcc jako linkera, bo wie, jak dołączyć biblioteki CUDA.
+# POPRAWKA: Zmieniamy -Xlinker na -Xcompiler dla flagi -fopenmp
+LDFLAGS = -Xcompiler -fopenmp -lopenblas -lOpenCL -lrt -lcublas
 
 # Nazwa pliku wykonywalnego
 TARGET = program
 
-# Automatycznie znajdź wszystkie pliki źródłowe .c w bieżącym katalogu
-SRCS = $(wildcard *.c)
-# Zamień rozszerzenia .c na .o
-OBJS = $(SRCS:.c=.o)
+# Automatycznie znajdź pliki źródłowe
+SRCS_C = $(filter-out cuda_multiply.c, $(wildcard *.c))
+SRCS_CU = $(wildcard *.cu)
+
+# Zamień rozszerzenia na .o
+OBJS_C = $(SRCS_C:.c=.o)
+OBJS_CU = $(SRCS_CU:.cu=.o)
+OBJS = $(OBJS_C) $(OBJS_CU)
 
 # Cel domyślny
 all: $(TARGET)
-	@echo "Build complete. Cleaning up object files"
-	$(MAKE) clean_objs
-# Reguła linkowania
-# Dodajemy flagi linkera na końcu polecenia
-$(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
-# Reguła kompilacji
-# Ta reguła używa CFLAGS do kompilacji każdego pliku .c
+# Reguła linkowania: użyj nvcc do połączenia wszystkich plików .o
+$(TARGET): $(OBJS)
+	$(NVCC) -o $(TARGET) $(OBJS) $(LDFLAGS)
+
+# Reguła kompilacji dla plików .c
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean_objs:
-	rm -f $(OBJS)
+# Reguła kompilacji dla plików .cu
+%.o: %.cu
+	$(NVCC) $(NVFLAGS) -c $< -o $@
 
 # Cel do czyszczenia
 clean:
 	rm -f $(TARGET) $(OBJS)
 
-# Informuje make, że "all" i "clean" to nie są nazwy plików
 .PHONY: all clean

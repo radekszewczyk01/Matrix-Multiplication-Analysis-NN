@@ -1,0 +1,152 @@
+int factor = 2;
+int n = 1000 * factor;
+int k = 2000 * factor;
+int m = 1500 * factor;
+
+--- Running test for: multiply_ikj() ---
+Function: multiply_ikj()
+Time measured: 14197.165589 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_blocked() ---
+Function: multiply_blocked()
+Time measured: 16306.294258 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_parallel() ---
+Function: multiply_parallel()
+Time measured: 7748.288896 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 559.759687 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_opencl() (GPU OpenCL) ---
+Błąd OpenCL (-1001) w 'clGetPlatformIDs'
+Error in function: multiply_opencl() (GPU OpenCL)
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 2288.502094 miliseconds
+----------------------------------------
+
+------------------------------------------------------------------------------------------  
+
+int factor = 1;
+int n = 1000 * factor;
+int k = 2000 * factor;
+int m = 1500 * factor;
+
+--- Running test for: multiply_ikj() ---
+Function: multiply_ikj()
+Time measured: 2035.338922 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_blocked() ---
+Function: multiply_blocked()
+Time measured: 2401.147790 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_parallel() ---
+Function: multiply_parallel()
+Time measured: 722.089721 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 71.418794 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_opencl() (GPU OpenCL) ---
+Błąd OpenCL (-1001) w 'clGetPlatformIDs'
+Error in function: multiply_opencl() (GPU OpenCL)
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 626.637175 miliseconds
+----------------------------------------
+
+---------------------------------------------------------------------------------------------------
+int factor = 1;
+int n = 4096 * factor;
+int k = 4096 * factor;
+int m = 4096 * factor;
+
+
+--- Running test for: multiply_parallel() ---
+Function: multiply_parallel()
+Time measured: 8381.003892 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 520.952254 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+    -> Czas kopiowania na GPU: 28.013 ms
+    -> Czas wykonania kernela: 1485.167 ms
+    -> Czas kopiowania z GPU:  14.169 ms
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 1672.384023 miliseconds
+----------------------------------------
+
+
+--------------------------------------------------------------------------------------------------
+
+int factor = 2;
+int n = 4096 * factor;
+int k = 4096 * factor;
+int m = 4096 * factor;
+
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 4703.787965 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+    -> Czas kopiowania na GPU: 100.277 ms
+    -> Czas wykonania kernela: 11156.794 ms
+    -> Czas kopiowania z GPU:  56.006 ms
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 10901.104255 miliseconds
+----------------------------------------
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+int factor = 2;
+int n = 4096 * factor;
+int k = 4096 * factor;
+int m = 4096 * factor;
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 1878.663086 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+    -> Czas kopiowania na GPU: 50.260 ms
+    -> Czas wykonania kernela: 426.782 ms
+    -> Czas kopiowania z GPU:  28.659 ms
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 774.889954 miliseconds
+----------------------------------------
+
+
+int factor = 3;
+int n = 4096 * factor;
+int k = 4096 * factor;
+int m = 4096 * factor;
+
+--- Running test for: multiply_blas() ---
+Function: multiply_blas()
+Time measured: 5817.513184 miliseconds
+----------------------------------------
+
+--- Running test for: multiply_cuda() (GPU CUDA/cuBLAS) ---
+    -> Czas kopiowania na GPU: 103.777 ms
+    -> Czas wykonania kernela: 1622.344 ms
+    -> Czas kopiowania z GPU:  63.733 ms
+Function: multiply_cuda() (GPU CUDA/cuBLAS)
+Time measured: 1900.551392 miliseconds
+----------------------------------------
